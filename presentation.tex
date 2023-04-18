@@ -1,9 +1,71 @@
-\documentclass[pdf]{beamer}
+\documentclass[hyperref={pdfpagemode=FullScreen}, aspectratio=169, 10pt]{beamer}
 
-\title{The title}
-\subtitle{The subtitle}
-\author{Sam Leonard}
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+
+\title{Exploring Password Authenticated Key Exchange Algorithms}
+\subtitle{Final Year Project Screencast}
+\author{\texorpdfstring{Sam Leonard\newline Supervisor: Bernardo Magri}{Sam Leonard}}
+\date{}
 
 \begin{document}
+
+\maketitle
+
+\begin{frame}{Table of contents}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents%[hideallsubsections]
+\end{frame}
+
+\section[Intro]{Introduction}
+
+\begin{frame}{Motivation}
+  PAKEs are fucking awesome
+\end{frame}
+
+\begin{frame}{Project Summary}
+  I made an awesome PAKE in Rust
+\end{frame}
+
+\section{Context}
+
+\begin{frame}{What are PAKEs?}
+  PAKEs are fancy crypto
+\end{frame}
+
+\begin{frame}{Elliptic Curves}
+  curvy bois
+\end{frame}
+
+\begin{frame}{Finite Fields}
+  clock maths
+\end{frame}
+
+\begin{frame}{Elliptic Curves Over Finite Fields}
+  dotty curves
+\end{frame}
+
+\begin{frame}{AuCPace}
+  Augmented Composable what now?
+\end{frame}
+
+\section{Demo}
+
+\begin{frame}{Conclusion}
+  I did a thing!
+\end{frame}
+
+\begin{frame}[standout]
+  Thank you for watching!
+\end{frame}
 
 \end{document}
