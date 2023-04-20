@@ -95,6 +95,7 @@
       \node[bob,mirrored,minimum size=1.5cm] at (5,0) {Bob -- Server};
       \draw[->] (1,0.5) -- (4,0.5) node[midway, above] {password};
       \draw[->] (4,-0.5) -- (1,0-0.5) node[midway, above] {auth \cmark};
+      \node at (2.5, -2) {Traditional Authentication};
     \end{tikzpicture}
   \end{figure}
 \end{frame}
@@ -103,11 +104,21 @@
 % mention augmented pakes where password is replaced with a verifier
 \begin{frame}{Motivation}
   PAKEs are a radically different solution to this problem.
+  \begin{itemize}
+    \item{the password never leaves a user's device}
+    \item{an eavesdropper cannot learn enough information to attack the protocol}
+    \item{both the server and client are authenticated with each other}
+  \end{itemize}
 \end{frame}
 
 % talk about how implemented AuCPace in Rust and open sourced the implementation through RustCrypto
 \begin{frame}{Project Summary}
-  I made an awesome PAKE in Rust
+
+  \begin{itemize}
+    \item{implemented AuCPace in Rust}
+    \item{contributed the implementation back to open-source}
+    \item{created an example application of AuCPace running on real hardware}
+  \end{itemize}
 \end{frame}
 
 \section{Context}
