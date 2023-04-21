@@ -1,0 +1,96 @@
+Hi I'm Sam Leonard and welcome to my third year project screencast.
+My project was title exploring password authenticated key exchange algorithms, and was supervised by Bernardo Magri.
+
+
+To start with I'm going to introduce PAKEs and go over some of the motivations behind them.
+Then I will go over the context of my project, and finally I will do a demonstration.
+
+
+Onto the introduction.
+
+
+First I will outline the traditional method for authenticating a user.
+The user sends their password in plaintext to the server, a hash of the password is computed and then compared against what is stored for that user.
+If it matches the user is authenticated.
+
+This method is fundamentally flawed.
+The second the user's password leaves their device it is open to attack, for example by malware that could be hiding on the server.
+
+
+PAKEs take a different approach to authentication.
+With PAKEs, your password never leaves your computer.
+As an additional bonus both you and the server are authenticated with each other, meaning you can the trust the server and they can trust you.
+
+
+In the diagram shown here, both the server and client have the password, they then apply a little magic and both come up with a key.
+If the keys match then they are authenticated with each other, and can use the shared secret key to communicate with each other.
+For example using a symmetric encryption scheme such as AES.
+
+There are two main kinds of PAKE, Balanced and Augmented, the diagram shows a balanced PAKE.
+For an Augmented PAKE the server instead stores a verifier, this is something which is calculated from a one-way function of the password, so that the server cannot recover the user's password.
+
+
+This shows an example of a Balanced PAKE protocol - SPAKE2.
+We can see the password being used on both sides as part of the protocol.
+If the protocol was executed faithfully SK_A and SK_B will both be the same shared secret key.
+
+
+Modern cryptographic protocols make heavy use of elliptic curves, due to their advantageous properties, including faster computation and smaller key sizes.
+This graph shows an example curve over the real numbers.
+
+
+Elliptic curve cryptography is based on the notion of point addition.
+Here you can see the addition of two points P and Q is taking the line through the points, and finding where it intersects with the curve again, this point is then flipped around the X axis to get our new point, which is the result of adding P and Q.
+The other panels show the rules for some edge cases, such as adding a point to itself, referred to as doubling, and taking the inverse of a point.
+The identity element of our group is referred to as the neutral element and it represents the point at infinity.
+
+
+Because computers cannot represent the real numbers we must instead use a finite set.
+As is common in many cryptographic settings we use the finite field of integers mod some prime p.
+This is notated as F sub p, or GF(p), where GF means galois field.
+
+
+Elliptic curves look very different over finite fields, so this a plot of the points in our set for the elliptic curve shown below and the integers mod 89.
+We now have no negative numbers, and instead we have a symmetry around y=89/2, so to negate a point it is flipped in this line instead.
+Our rule still holds for finding the line through two points and finding where it intersects again, except this time our line wraps around our box because of modular arithmetic.
+
+
+AuCPace is the protocol I chose to implement for the project.
+It is an augmented PAKE based on elliptic curve cryptography targetting microcontrollers and other embedded devices.
+There are three variants which allow the user to choose what combination of properties suits their needs best.
+
+Strong AuCPace has pre computation resistance, this is a property that was introduced in 2018 by the team behind the OPAQUE protocol.
+It means that no matter what an eavesdropper listens in to they cannot even start to compute anything.
+SRP - a PAKE without this property leaks the salt value for the user's password, this means that an eavesdropper can start computing a rainbow table in order to crack the user's password very quickly should they ever get the password.
+
+Partial Augmentation is a server side feature of the protocol, whereby the server stores a long-term key for a user instead of computing one fresh every time.
+This reduces the computational load on the server, something especially important for microcontrollers.
+
+Implicit mutual authentication is a modification to the protocol as a whole and it removes the final phase of the protocol - explicit mutual authentication.
+Instead of sending each other an authenticator, both the client and server simply compute the shared key and implicitly trust each other.
+This reduces the computational load for both the client and server, and reduces the time it takes to perform the protocol by removing a round of messages.
+
+
+RustCrypto is a github organisation focussed on creating pure Rust implementations of various cryptography primitives an algorithms.
+For example shown here they have implemented the SHA2 hashing algorithm as one of their crates.
+They also maintain a collection of PAKE implementations.
+As part of my project I collaborated with them to include my AuCPace implementation in their collection to allow anyone to use the protocol by simply including the crate in their project.
+
+
+Now I will show a demo of my library running on a real microcontroller.
+
+
+On the left you can see cargo building the application and uploading it to the board's flash.
+I will now run the client in the right panel.
+
+We can now see the messages sent between the two and that they have agreed on the same shared key.
+
+To run a variant on the protocol we can use the features of the library, so here I can add strong AuCPace and partial augmentation.
+On the client I only need to add the strong flag because partial is a server only flag.
+We can now see that it's using Strong AuCPace from the messages sent.
+
+
+In conclusion I have implemented AuCPace and all its variants in an ergonomic Rust library, and I have open sourced it through RustCrypto, providing a meaningful addition to the security landscape for Rust based embedded applications.
+
+
+Thank you for watching.
